@@ -1,77 +1,88 @@
-import socket
-from laneDetector import LaneDetector 
+from socket import socket,AF_INET,SOCK_STREAM,SHUT_RDWR ,timeout
+import sys
 
 class TCPServer():
 
-    def __init__(self,serverPort,saveTo):
+    def __init__(self,serverPort):
         self.serverSocket = None
         self.serverState = None
         self.connectionSocket = None
         self.clientAddr = None
 
         self.initServer(serverPort)
-
         self.initConnection()
-        self.recieveFrame(saveTo)
 
-        self.sendDirection('left')
+        # self.chatFClient()
+        # self.chatTClient('HELLLLOOOO')
+        self.chatLoop()
+
+        self.serverSocket.shutdown(SHUT_RDWR)
         self.serverSocket.close()
+        sys.exit()
 
 
     def initServer(self,serverPort):
-
-        self.serverSocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        self.serverSocket.bind(('',serverPort))
+        # Create the server Welcoming socket
+        self.serverSocket = socket(AF_INET,SOCK_STREAM)
+        # Bind the Welcoming socket to {it's interfaces} and {serverPort}
+        self.serverSocket.bind(('192.168.1.3',serverPort))
         print(f'---- Created serverSocket ----')
+        # server Welcoming socket is waiting for clients to connect to it ... 
         self.serverSocket.listen(1)
         print(f'serverSocket Listening...')
+
         self.serverState = True
-        # serverPort = 1200
     
+
     def initConnection(self):
 
         # while self.serverState:
         self.connectionSocket , self.clientAddr = self.serverSocket.accept()
-        print(f'-- Created connectionSocket --')
+        # if idle: times out after 10 secs 
+        self.connectionSocket.settimeout(10)
+        print(f'-- Created new connectionSocket --')
         print(f'conncted with: {self.clientAddr}')
             
 
 
-    def recieveFrame(self,saveTo):
-        frameFile = open(saveTo,'wb')
-        while True:
+    def chatFClient(self):
 
-            # self.connectionSocket.settimeout()
-            recievedPartialFrame = self.connectionSocket.recv(512)
-            if not recievedPartialFrame:
-                break
-            frameFile.write(recievedPartialFrame)
-            
-            print(f'Recived: {recievedPartialFrame}\n\n')
-            print('in loop')
-        print('out of loop')
-        frameFile.close()
-        print(f'Recived complete Frame')
+        recievedMsg = self.connectionSocket.recv(1024).decode()
+        
+        print(f'{self.clientAddr} says: {recievedMsg}')
+
+        return recievedMsg
 
 
-    # def sendDirection(self,direction):   
-    #     self.initConnection()
-    #     self.connectionSocket.send(direction.encode())
+    def chatTClient(self,messageTosend:str):   
+        self.connectionSocket.send(messageTosend.encode())
                 
-    #     print(f'Sent: {direction}')
-    #     self.connectionSocket.close()
-    #     print(f'-- End connection --')
-
+        # print(f'Sent: {messageTosend}')
+        
     
-    def processFrame(self):
-        pass    
+    def chatLoop(self):
+        inputMsg = ' '
+        rcvdMsg = ' '
+        while rcvdMsg.upper().strip() != 'BYE':
+            inputMsg = str(input())
+            if (inputMsg.upper().strip() == 'BYE'):
+                self.chatTClient(inputMsg)
+                break
+            self.chatTClient(inputMsg)
+            try:
+                rcvdMsg = self.chatFClient()
+            except timeout:
+                print('TIMEOUT')
+                self.chatTClient('BYE')
+                break 
+            
+        self.connectionSocket.shutdown(SHUT_RDWR)
+        self.connectionSocket.close()
+        print(f'-- End connection from Server side--')
 
-    
-    
-server = TCPServer(1208,'rcvdFrame.jpeg')
+if __name__ == "__main__":
+    server = TCPServer(22222)
 
-    # def closeServer(self):
-        # pass
-        # print(f'---- SERVER is CLOSED ----')
+
 
 

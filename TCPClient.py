@@ -1,59 +1,55 @@
-import socket
-
+from socket import socket,AF_INET,SOCK_STREAM ,SHUT_RDWR
+import sys
 
 class TCPClient():
-    def __init__(self,frameToSend,serverIp,serverPort):
-        self.direction = None
+    def __init__(self,serverIp,serverPort):
         # create a tcp socket
         self.clientSocket = None
         print(f'--- Created socket ---')
 
         self.initConnection(serverIp,serverPort)
-        self.sendFrame(frameToSend)
-        self.recivedDirection()
-
+        # self.chatTServer(messageToSend)
+        # self.chatFServer()
+        self.chatLoop()
+        sys.exit()
 
     def initConnection(self,serverIp,serverPort):
-        self.clientSocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.clientSocket = socket(AF_INET,SOCK_STREAM)
         # initiate three-way tcp handshake with the server 
         self.clientSocket.connect((serverIp,serverPort))
         print(f'Connected to server: {(serverIp,serverPort)}')
 
 
-    def sendFrame(self,FrameToSend):
+    def chatTServer(self,messageToSend:str):
                 
-        frame = open(FrameToSend,'rb')  
-        while True:
-            partialData = frame.read(512)
-            if not partialData:
-                break
-            self.clientSocket.send(partialData)
-            print(f'Sent: {partialData}\n\n')
-        print('Sent Complete Frame')
-        self.clientSocket.close()
+        self.clientSocket.send(messageToSend.encode())
+        # print(f'Sent: {messageToSend}\n')
         
-        # self.clientSocket.send('SentAll'.encode())
+    def chatFServer(self):
 
-        frame.close()
-            
+        message = self.clientSocket.recv(1024).decode()
+        print(f'server says: {message}')
+        
+        return message
 
-        # recivedMessage = self.clientSocket.recv(1024).decode()
+    def chatLoop(self):
+        inputMsg = ' '
+        rcvdMsg = ' '
+        while True:
+            rcvdMsg = self.chatFServer() 
+            if rcvdMsg.upper().strip() == 'BYE':
+                break
+            inputMsg = str(input())
+            if (inputMsg.upper().strip() == 'BYE'):
+                self.chatTServer(inputMsg)
+                break
+            self.chatTServer(inputMsg)
+        self.clientSocket.shutdown(SHUT_RDWR)        
+        self.clientSocket.close()        
+        print(f'-- End connection from client Side --')
 
-        # print(f'Recived: {recivedMessage}')
 
+serverIp = '192.168.1.3' # home lan ip
+serverPort = 22222
 
-    def recivedDirection(self):
-        print('waiting for direction...\n')
-        self.initConnection(serverIp,serverPort)
-
-        self.direction = self.clientSocket.recv(1024).decode()
-        print(f'turn: {self.direction}')
-        self.clientSocket.close()
-        print('--- BYE ---')
-
-
-# serverIp = '192.168.1.3' # home lan ip
-serverIp = '172.28.132.215' # sbme lan ip
-serverPort = 1208
-
-client = TCPClient('lane3.jpg',serverIp,serverPort)
+client = TCPClient(serverIp,serverPort)
