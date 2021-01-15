@@ -38,7 +38,7 @@ class TCPClient():
         rcvdMsg = ' '
         while True:
             # rcvdMsg = self.chatFServer()
-            inputMsg = input("messag eto send:  ")
+            inputMsg = input("message to send:  ")
             self.chatTServer(inputMsg)
             # if rcvdMsg.upper().strip() == 'BYE':
             #     break
