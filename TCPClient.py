@@ -46,7 +46,7 @@ class TCPClient():
             # if (inputMsg.upper().strip() == 'BYE'):
             #     self.chatTServer(inputMsg)
             #     break
-            self.chatTServer(inputMsg)
+            # self.chatTServer(inputMsg)
             rcvdMsg = self.chatFServer()
         self.clientSocket.shutdown(SHUT_RDWR)
         self.clientSocket.close()

@@ -81,6 +81,12 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>PT Bold Heading</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
@@ -90,6 +96,12 @@
       <width>201</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>PT Bold Heading</family>
+      <pointsize>12</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
