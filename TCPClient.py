@@ -34,29 +34,26 @@ class TCPClient():
         return message
 
     def chatLoop(self):
-        inputMsg = ' '
-        rcvdMsg = ' '
-        while True:
-            # rcvdMsg = self.chatFServer()
-            inputMsg = input("message to send:  ")
-            self.chatTServer(inputMsg)
-            # if rcvdMsg.upper().strip() == 'BYE':
-            #     break
-            # inputMsg = str(input())
-            # if (inputMsg.upper().strip() == 'BYE'):
-            #     self.chatTServer(inputMsg)
-            #     break
-            self.chatTServer(inputMsg)
-            rcvdMsg = self.chatFServer()
-        self.clientSocket.shutdown(SHUT_RDWR)
-        self.clientSocket.close()
-        print(f'-- End connection from client Side --')
+            inputMsg = ' '
+            rcvdMsg = ' '
+            while True:
+                rcvdMsg = self.chatFServer() 
+                if rcvdMsg.upper().strip() == 'BYE':
+                    break
+                inputMsg = str(input('Send: '))
+                if (inputMsg.upper().strip() == 'BYE'):
+                    self.chatTServer(inputMsg)
+                    break
+                self.chatTServer(inputMsg)
+            self.clientSocket.shutdown(SHUT_RDWR)        
+            self.clientSocket.close()        
+            print(f'-- End connection from client Side --')
 
 
 if __name__ == "__main__":
 
     # assuming server is on same machine of client ,this function gets the default local  IPv4 Address for any machine.
     serverIp = get_local_IP()
-    serverPort = 22222
+    serverPort = 22226
 
     client = TCPClient(serverIp, serverPort)
