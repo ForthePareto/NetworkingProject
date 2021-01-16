@@ -1,6 +1,6 @@
 import socket
 from socket import socket, AF_INET, SOCK_STREAM, SHUT_RDWR, timeout, SOCK_DGRAM
-
+from  bmi import Bmi
 
 import sys
 import selectors
@@ -119,6 +119,18 @@ class MultiConnectionServer:
                 sock.close()
         if mask & selectors.EVENT_WRITE:
             if data.outb:
+
+                try:
+                    weight, height, age, gender = data.outb.decode().split(",")  # user_info =[ wight,height,gender, age]
+                except :
+                    print("data is not structured")
+                bmi_calculator = Bmi(float(weight), float(height), float(age), gender)
+                bmi_calculated = bmi_calculator.calculate_bmi(float(weight), float(height))
+                sent = sock.send(str(bmi_calculated).encode())  # Should be ready to write
+                data.outb = data.outb[sent:]
+                
+
+
                 print("echoing", repr(data.outb), "to", data.addr)
                 sent = sock.send(data.outb)  # Should be ready to write
                 data.outb = data.outb[sent:]
