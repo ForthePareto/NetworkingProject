@@ -14,9 +14,9 @@ class ServerDB():
         self.create_connection(r'serverDB.db')
         self.create_table(sql_create_users_table)
         # self.create_user(('doe','999',45.2))
-        self.update_user((20.3,'adel'))
+        # self.update_user((20.3,'adel'))
         # self.select_user_by_name(('adel'))
-        self.select_all_users()
+        # self.select_all_users()
 
     def create_connection(self,db_file):
         """ create a database connection to the SQLite database
@@ -57,7 +57,7 @@ class ServerDB():
         try:
             cur.execute(sql, user)
             self.conn.commit()
-            print(f'name: {cur.lastrowid}') 
+            # print(f'name: {cur.lastrowid}') 
             return cur.lastrowid
         except sqlite3.IntegrityError as e:
             print(e)
@@ -84,14 +84,18 @@ class ServerDB():
         :param name: str
         :return: the row as a triple (name,pasword,bmi)
         """
+        
         cur = self.conn.cursor()
         cur.execute("SELECT * FROM users WHERE name=?", (name,))
 
         rows = cur.fetchall() # this should be a single row since iam fetching using a unique identifier  
 
-        print(rows[0])
-        return rows[0]
-
+        try:
+            print(rows[0])
+            return rows[0]
+        except IndexError as e:
+            return 'notFound'
+        
     def select_all_users(self):
         """
         Query all rows in the users table
@@ -118,5 +122,16 @@ class ServerDB():
             self.conn.commit()
         except:
             print('user does NOT exits')
+
+    def delete_all_users(self):
+        """
+        Delete all rows in the users table
+        :return:
+        """
+        sql = 'DELETE FROM users'
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        self.conn.commit()
+        
 if __name__ == '__main__':
     db = ServerDB()

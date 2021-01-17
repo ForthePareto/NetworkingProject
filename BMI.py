@@ -1,8 +1,10 @@
 class BMI():
 
-    def __init__(self,mass,height):
-        bmi = self.calcBmi(mass,height)
-        self.notify(bmi)
+    def __init__(self):
+        self.mass = None
+        self.height = None
+
+        
     def calcBmi(self,mass,height):
     
         return round(mass / ((height / 100) ** 2),ndigits=1)
@@ -23,7 +25,13 @@ class BMI():
         
 
 
-    def notify(self,bmi):
-        print(f'Your BMI is {bmi}, {self.identifyCategory(bmi)}')
+    def notify(self,mass,height):
+        self.mass = mass
+        self.height = height
 
-# b = BMI(65,190)
+        bmi = self.calcBmi(self.mass,self.height)
+        return bmi,self.identifyCategory(bmi)
+
+
+b = BMI()
+print(b.notify(65,190))
