@@ -244,10 +244,10 @@ color: rgb(95, 83, 247);</string>
      <enum>QLCDNumber::Filled</enum>
     </property>
     <property name="value" stdset="0">
-     <double>24.100000000000001</double>
+     <double>0.000000000000000</double>
     </property>
     <property name="intValue" stdset="0">
-     <number>24</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QLabel" name="healthState_label">
