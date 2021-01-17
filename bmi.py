@@ -1,28 +1,37 @@
+class BMI():
 
+    def __init__(self):
+        self.mass = None
+        self.height = None
 
-class Bmi:
-    def __init__(self, weight, height, age, gender="M"): 
-        self.weight = weight
-        self.height = height
-        self.age = age
-        self.gender = gender.upper()
-        self.bmi_calculated = self.calculate_bmi(weight, height)
+        
+    def calcBmi(self,mass,height):
+    
+        return round(mass / ((height / 100) ** 2),ndigits=1)
+
+    def identifyCategory(self,bmi):
+        if (0 < bmi <= 16):
+            return 'Severely Underweight'
+        elif (16 < bmi <= 18.5):
+            return 'Underweight'
+        elif (18.5 < bmi <= 25):
+            return 'Normal'
+        elif (25 < bmi < 30):
+            return 'Overwight'
+        elif (30 < bmi):
+            return 'Obese'
+        else:
+            return 'why r u gai'
         
 
-    
-    def calculate_bmi(self, weight, height):
-        bmi = 0
-        if height != 0:
-            bmi = weight/(height**2)
-        return bmi
 
-    def calculate_daily_calories(self):
-        pass
+    def notify(self,mass,height):
+        self.mass = mass
+        self.height = height
 
-    def check_health_state(self):
-        state = " "
-        if (20 < self.bmi_calculated < 50) and self.gender == "M":
-            state = "healthy"
-        elif self.gender == "F":
-            state = "kill yourself"
-        return state
+        bmi = self.calcBmi(self.mass,self.height)
+        return bmi,self.identifyCategory(bmi)
+
+
+b = BMI()
+print(b.notify(65,190))
