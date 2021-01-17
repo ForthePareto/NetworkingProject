@@ -41,6 +41,7 @@ class  UiManager(QtWidgets.QMainWindow):
         bmi = self.received_data.split(",")[0]
         self.main_window.bmi_lcd.display(float(bmi))
         self.main_window.healthState_label.setText(self.received_data.split(",")[1])
+        client.close_connection()
     def start_tracking(self):
         if self.is_info_sent ==True :
             self.timer.stop()
