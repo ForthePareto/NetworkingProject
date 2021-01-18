@@ -14,7 +14,7 @@ class TCPClient():
         self.initConnection(serverIp, serverPort)
         # self.chatTServer(messageToSend)
         # self.chatFServer()
-        # self.chatLoop()
+        self.chatLoop()
 
     def initConnection(self, serverIp, serverPort):
         self.clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -39,7 +39,7 @@ class TCPClient():
         rcvdMsg = ' '
         stillOn = True
 
-        rcvdMsg = self.chatFServer()  # greetings from server and request credentials
+        # rcvdMsg = self.chatFServer()  # greetings from server and request credentials
         while stillOn:
             # if rcvdMsg.upper().strip() == 'BYE':
             #     break
@@ -56,8 +56,7 @@ class TCPClient():
             # send credentials
             self.chatTServer(f'{username},{hashedPassword.hexdigest()}')
 
-            statFlag, oldBmi = self.chatFServer().strip().split(
-                ':')  # check credentials from server
+            statFlag, oldBmi = self.chatFServer().strip().split(':')  # check credentials from server
             if (statFlag.lower().strip() == 'success') or (statFlag.lower().strip() == 'new'):
                 # self.chatFServer() # requesting weight and height
                 self.chatTServer(str(input("Weight,Height: ")))  # send them
@@ -125,4 +124,4 @@ if __name__ == "__main__":
     serverPort = 22222
 
     client = TCPClient(serverIp, serverPort)
-    client.chatLoop()
+    # client.chatLoop()
