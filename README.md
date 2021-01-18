@@ -8,6 +8,10 @@ This is a project for the classwork of computer networking class.
 | Mahmoud Abd AlMoneem   | 2       | 26 |
 | Adel Refat Ali         | 2       | 2  |
 | Ahmad Adel Muhammad    | 1       | 7  | 
+### Snippets From Application UI
+![Login window](resources/media/Screenshot_login.png)
+![Main window](resources/media/Screenshot_main.png)
+
 ### Screen Shot of the protocol chatLoop in action showing the database content and the socket states after the session is completed
 ![Console App Session Example](resources/media/consoleAppSession.png)
 
