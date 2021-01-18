@@ -74,8 +74,6 @@ class TCPClient():
         print(f'-- End connection from client Side --')
 
     def check_authority(self, name_pass_pair):
-        rcvdMsg = ' '
-
         username, password = name_pass_pair.strip().split(',')
         self.username = username
         hashedPassword = hashlib.sha256()

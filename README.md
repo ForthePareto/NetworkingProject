@@ -20,6 +20,10 @@ This is a project for the classwork of computer networking class.
 2. Handlling MultiClient Server Communication
 3. sqllite for database management
 4. simple user account logging and password storage security  
-   
+## Usage 
+First make sure you have requirements `pip install -r requirements.txt`
+
+Then on the CLI run the server code `python MCTCPServer.py`
+At another terminal run the client code `python UI_Manager.py`
 ## Sequence of Sockets Communication
 ![Sockets communication diagram](resources/media/SocketDiagram.png)
