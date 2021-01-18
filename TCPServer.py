@@ -114,7 +114,7 @@ class TCPServer():
                 try:
                     weight,height = self.chatFClient().strip().split(',')
                     bmi,catagory = self.bmiCal.notify(int(weight),int(height))
-                    self.chatTClient(f'Your BMI is {bmi}, {catagory}')
+                    self.chatTClient(f'{bmi}, {catagory}')
                     self.dataBase.update_user((bmi,username))
                 except ValueError:
                     break
@@ -128,7 +128,7 @@ class TCPServer():
                 self.chatTClient('BYE')
                 break
         
-
+        
         self.connectionSocket.shutdown(SHUT_RDWR)
         self.connectionSocket.close()
         print(f'-- End connection from Server side--')

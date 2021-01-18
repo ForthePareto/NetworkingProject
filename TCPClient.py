@@ -9,12 +9,12 @@ class TCPClient():
         # create a tcp socket
         self.clientSocket = None
         print(f'--- Created socket ---')
-
+        self.dataToSend = " "
+        self.dataReceived = " "
         self.initConnection(serverIp, serverPort)
         # self.chatTServer(messageToSend)
         # self.chatFServer()
-        self.chatLoop()
-        sys.exit()
+        # self.chatLoop()
 
     def initConnection(self, serverIp, serverPort):
         self.clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -35,40 +35,68 @@ class TCPClient():
         return message
 
     def chatLoop(self):
-            inputMsg = ' '
-            rcvdMsg = ' '
-            stillOn = True
-            
-            rcvdMsg = self.chatFServer()  # greetings from server and request credentials
-            while stillOn:
-                # if rcvdMsg.upper().strip() == 'BYE':
-                #     break
-                inputMsg = str(input('username,password: '))
-                # TODO : hash the password then send it
-                if (inputMsg.upper().strip() == 'EXIT'):
-                    self.chatTServer(inputMsg) # send bye msg to notify the server to close it's side of the connection
-                    stillOn = False
-                    break
-                username,password = inputMsg.strip().split(',')
-                hashedPassword = hashlib.sha256()
-                hashedPassword.update(password.encode())
-                self.chatTServer(f'{username},{hashedPassword.hexdigest()}') # send credentials
+        inputMsg = ' '
+        rcvdMsg = ' '
+        stillOn = True
 
-                statFlag,oldBmi = self.chatFServer().strip().split(':') #check credentials from server
-                if (statFlag.lower().strip() == 'success') or (statFlag.lower().strip() == 'new'):
-                    # self.chatFServer() # requesting weight and height
-                    self.chatTServer(str(input("Weight,Height: "))) # send them
-                    self.chatFServer() # get back the BMI
-                    stillOn = False
-                else:
-                    #TODO: repeat 
-                    # ::DONE::
-                    print('TRY AGAIN...\n')
-                    
+        # rcvdMsg = self.chatFServer()  # greetings from server and request credentials
+        while stillOn:
+            # if rcvdMsg.upper().strip() == 'BYE':
+            #     break
+            inputMsg = str(input('username,password: '))
+            # TODO : hash the password then send it
+            if (inputMsg.upper().strip() == 'EXIT'):
+                # send bye msg to notify the server to close it's side of the connection
+                self.chatTServer(inputMsg)
+                stillOn = False
+                break
+            username, password = inputMsg.strip().split(',')
+            self.username = username
+            hashedPassword = hashlib.sha256()
+            hashedPassword.update(password.encode())
+            # send credentials
+            self.chatTServer(f'{username},{hashedPassword.hexdigest()}')
 
-            self.clientSocket.shutdown(SHUT_RDWR)        
-            self.clientSocket.close()        
-            print(f'-- End connection from client Side --')
+            statFlag, oldBmi = self.chatFServer().strip().split(
+                ':')  # check credentials from server
+            if (statFlag.lower().strip() == 'success') or (statFlag.lower().strip() == 'new'):
+                # self.chatFServer() # requesting weight and height
+                self.chatTServer(str(input("Weight,Height: ")))  # send them
+                self.dataReceived = self.chatFServer()  # get back the BMI
+                stillOn = False
+            else:
+                #TODO: repeat
+                # ::DONE::
+                print('TRY AGAIN...\n')
+
+        self.clientSocket.shutdown(SHUT_RDWR)
+        self.clientSocket.close()
+        print(f'-- End connection from client Side --')
+
+    def check_authority(self, name_pass_pair):
+        username, password = name_pass_pair.strip().split(',')
+        self.username = username
+        hashedPassword = hashlib.sha256()
+        hashedPassword.update(password.encode())
+        # send credentials
+        self.chatTServer(
+            f'user_password,{username},{hashedPassword.hexdigest()}')
+
+        _, statFlag = self.chatFServer().strip().split(
+            ',')  # check credentials from server
+
+        return statFlag.lower().strip()
+
+    def get_bmi(self, weight_height):
+        self.chatTServer("body_info,"+weight_height +
+                         ","+self.username)  # send them
+        return self.chatFServer()  # get back the BMI
+
+    def close_connection(self):
+        self.clientSocket.shutdown(SHUT_RDWR)
+        self.clientSocket.close()
+        print(f'-- End connection from client Side --')
+        # sys.exit()
 
 
 if __name__ == "__main__":
@@ -78,3 +106,4 @@ if __name__ == "__main__":
     serverPort = 22222
 
     client = TCPClient(serverIp, serverPort)
+    client.chatLoop()
