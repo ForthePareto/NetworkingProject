@@ -55,7 +55,7 @@ class MultiConnectionServer:
             recv_data = sock.recv(1024)  # Should be ready to read
             if recv_data:
                 # Any data that’s read is appended to data.outb so it can be sent later.
-                data.outb += recv_data
+                data.outb = recv_data
             else:
                 # This means that the client has closed their socket, so the server should too.
                 print("closing connection to", data.addr)
@@ -67,25 +67,30 @@ class MultiConnectionServer:
             # any received data stored in data.outb is processed and the answer is sent to the client
             if data.outb:
                 print("processing", repr(data.outb), "to", data.addr)
-
-                sent = sock.send(data.outb)  # Should be ready to write
+                dataTosend = self.process_message(data.outb.decode())
+                # Should be ready to write
+                sent = sock.send(dataTosend.encode())
                 # The bytes sent are then removed from the send buffer
-                data.outb = data.outb[sent:]
+                data.outb = None
 
-    def process_message(self, message)-> str: 
-        if type(message) == str:
+    def process_message(self, message) -> str:
+        print(f"message structure: {message}")
+        if type(message) != str:
             message = message.decode()
         message_words = message.replace(" ", "").split(",")
+        print(message_words)
         if len(message_words) > 0:
-            if message[0] == "user_password":
+            if message_words[0] == "user_password":
+                print("user and pass mode")
                 user_name, password = message_words[1:]
                 statFlag, oldBmi = self.checkCredentials(user_name, password)
+                statFlag = "status,"+statFlag
                 return statFlag
-            elif message[0] == "body_info":
+            elif message_words[0] == "body_info":
                 weight, height, username = message_words[1:]
                 bmi, catagory = self.bmiCal.notify(int(weight), int(height))
                 self.dataBase.update_user((bmi, username))
-                return(f'{bmi}, {catagory}')
+                return(f'result,{bmi},{catagory}')
             else:
                 print("strange message structure")
         else:

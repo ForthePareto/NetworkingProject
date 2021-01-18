@@ -38,8 +38,8 @@
   <widget class="QPushButton" name="login_Button">
    <property name="geometry">
     <rect>
-     <x>154</x>
-     <y>440</y>
+     <x>150</x>
+     <y>460</y>
      <width>191</width>
      <height>51</height>
     </rect>
@@ -176,6 +176,31 @@
    </property>
    <property name="text">
     <string>User Name</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="password_state_label">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>400</y>
+     <width>231</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>NSimSun</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 10, 10);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

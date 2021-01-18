@@ -32,7 +32,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
+        self.label_2.setStyleSheet(
+            "color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
         self.label_2.setObjectName("label_2")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(30, 310, 171, 61))
@@ -42,7 +43,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
+        self.label_4.setStyleSheet(
+            "color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
         self.label_4.setObjectName("label_4")
         self.height_field = QtWidgets.QLineEdit(self.centralwidget)
         self.height_field.setGeometry(QtCore.QRect(220, 330, 101, 31))
@@ -73,7 +75,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
+        self.label_5.setStyleSheet(
+            "color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
         self.label_5.setObjectName("label_5")
         self.calculate_button = QtWidgets.QPushButton(self.centralwidget)
         self.calculate_button.setGeometry(QtCore.QRect(120, 390, 191, 51))
@@ -86,24 +89,22 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         font.setStrikeOut(False)
         self.calculate_button.setFont(font)
-        self.calculate_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.calculate_button.setStyleSheet("box-shadow: 3px 5px 0px 0px #3dc21b;\n"
-"    background:linear-gradient(to bottom, #59635c 5%, #5cbf2a 100%);\n"
-"    background-color:#ADD8E6;\n"
-"    border-radius:15px;\n"
-"    border:1px solid #18ab29;\n"
-"    display:inline-block;\n"
-"    cursor:pointer;\n"
-"    color:purple;\n"
-"    \n"
-"    padding:10px 36px;\n"
-"    text-decoration:none;\n"
-"    text-shadow:0px 4px 0px #2f6627;")
+        self.calculate_button.setCursor(
+            QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.calculate_button.setStyleSheet(
+            "    background:linear-gradient(to bottom, #59635c 5%, #5cbf2a 100%);\n"
+            "    background-color:#ADD8E6;\n"
+            "    border-radius:15px;\n"
+            "    border:1px solid #18ab29;\n"
+            "    color:purple;\n"
+            "    padding:10px 36px;\n"
+            "    text-decoration:none;\n"
+        )
         self.calculate_button.setObjectName("calculate_button")
         self.bmi_lcd = QtWidgets.QLCDNumber(self.centralwidget)
         self.bmi_lcd.setGeometry(QtCore.QRect(260, 470, 121, 41))
         self.bmi_lcd.setStyleSheet("color: rgb(53, 236, 230);\n"
-"color: rgb(95, 83, 247);")
+                                   "color: rgb(95, 83, 247);")
         self.bmi_lcd.setSmallDecimalPoint(False)
         self.bmi_lcd.setDigitCount(5)
         self.bmi_lcd.setMode(QtWidgets.QLCDNumber.Dec)
@@ -115,13 +116,13 @@ class Ui_MainWindow(object):
         self.healthState_label.setGeometry(QtCore.QRect(90, 530, 261, 81))
         font = QtGui.QFont()
         font.setFamily("Arial Nova")
-        font.setPointSize(36)
+        font.setPointSize(15)
         font.setBold(False)
         font.setWeight(50)
         self.healthState_label.setFont(font)
         self.healthState_label.setAutoFillBackground(False)
         self.healthState_label.setStyleSheet("color: rgb(95, 83, 247);\n"
-"")
+                                             "")
         self.healthState_label.setTextFormat(QtCore.Qt.AutoText)
         self.healthState_label.setAlignment(QtCore.Qt.AlignCenter)
         self.healthState_label.setWordWrap(False)
@@ -136,13 +137,16 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate(
+            "MainWindow", "Your Personal BMI assist."))
+        MainWindow.setWindowIcon(QtGui.QIcon("resources/yoga-logo.png"))
         self.label_2.setText(_translate("MainWindow", "Your Weight"))
         self.label_4.setText(_translate("MainWindow", "Your Height"))
         self.height_field.setPlaceholderText(_translate("MainWindow", "cm"))
         self.weight_field.setPlaceholderText(_translate("MainWindow", "k.g"))
         self.label_5.setText(_translate("MainWindow", "Your Body Mass Index:"))
-        self.calculate_button.setText(_translate("MainWindow", "Calculate BMI"))
+        self.calculate_button.setText(
+            _translate("MainWindow", "Calculate BMI"))
         self.healthState_label.setText(_translate("MainWindow", " "))
 
 

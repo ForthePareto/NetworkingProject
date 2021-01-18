@@ -25,7 +25,7 @@ class LoginWindow(object):
         self.label.setPixmap(QtGui.QPixmap("resources/background.png"))
         self.label.setObjectName("label")
         self.login_Button = QtWidgets.QPushButton(Dialog)
-        self.login_Button.setGeometry(QtCore.QRect(154, 440, 191, 51))
+        self.login_Button.setGeometry(QtCore.QRect(150, 460, 191, 51))
         font = QtGui.QFont()
         font.setFamily("Gadugi")
         font.setPointSize(16)
@@ -36,18 +36,16 @@ class LoginWindow(object):
         font.setStrikeOut(False)
         self.login_Button.setFont(font)
         self.login_Button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.login_Button.setStyleSheet("box-shadow: 3px 5px 0px 0px #3dc21b;\n"
+        self.login_Button.setStyleSheet(
 "    background:linear-gradient(to bottom, #59635c 5%, #5cbf2a 100%);\n"
 "    background-color:#ADD8E6;\n"
 "    border-radius:15px;\n"
 "    border:1px solid #18ab29;\n"
-"    display:inline-block;\n"
-"    cursor:pointer;\n"
+
 "    color:purple;\n"
-"    \n"
 "    padding:10px 36px;\n"
 "    text-decoration:none;\n"
-"    text-shadow:0px 4px 0px #2f6627;")
+)
         self.login_Button.setObjectName("login_Button")
         self.login_userName_field = QtWidgets.QLineEdit(Dialog)
         self.login_userName_field.setGeometry(QtCore.QRect(222, 309, 211, 31))
@@ -90,13 +88,24 @@ class LoginWindow(object):
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));")
         self.label_2.setObjectName("label_2")
+        self.password_state_label = QtWidgets.QLabel(Dialog)
+        self.password_state_label.setGeometry(QtCore.QRect(200, 400, 231, 41))
+        font = QtGui.QFont()
+        font.setFamily("NSimSun")
+        font.setPointSize(14)
+        self.password_state_label.setFont(font)
+        self.password_state_label.setStyleSheet("color: rgb(255, 10, 10);")
+        self.password_state_label.setText("")
+        self.password_state_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.password_state_label.setObjectName("password_state_label")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowIcon(QtGui.QIcon("resources/yoga-logo.png"))
+        Dialog.setWindowTitle(_translate("Dialog", "Login"))
         self.login_Button.setText(_translate("Dialog", "Login"))
         self.label_3.setText(_translate("Dialog", "Password"))
         self.label_2.setText(_translate("Dialog", "User Name"))

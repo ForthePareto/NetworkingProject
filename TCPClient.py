@@ -14,7 +14,7 @@ class TCPClient():
         self.initConnection(serverIp, serverPort)
         # self.chatTServer(messageToSend)
         # self.chatFServer()
-        self.chatLoop()
+        # self.chatLoop()
 
     def initConnection(self, serverIp, serverPort):
         self.clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -51,12 +51,14 @@ class TCPClient():
                 stillOn = False
                 break
             username, password = inputMsg.strip().split(',')
+            self.username = username
             hashedPassword = hashlib.sha256()
             hashedPassword.update(password.encode())
             # send credentials
             self.chatTServer(f'{username},{hashedPassword.hexdigest()}')
 
-            statFlag, oldBmi = self.chatFServer().strip().split(':')  # check credentials from server
+            statFlag, oldBmi = self.chatFServer().strip().split(
+                ':')  # check credentials from server
             if (statFlag.lower().strip() == 'success') or (statFlag.lower().strip() == 'new'):
                 # self.chatFServer() # requesting weight and height
                 self.chatTServer(str(input("Weight,Height: ")))  # send them
@@ -70,6 +72,24 @@ class TCPClient():
         self.clientSocket.shutdown(SHUT_RDWR)
         self.clientSocket.close()
         print(f'-- End connection from client Side --')
+
+    def check_authority(self, name_pass_pair):
+        rcvdMsg = ' '
+            
+        username, password = name_pass_pair.strip().split(',')
+        self.username= username 
+        hashedPassword = hashlib.sha256()
+        hashedPassword.update(password.encode())
+        # send credentials
+        self.chatTServer(f'user_password,{username},{hashedPassword.hexdigest()}')
+
+        _, statFlag = self.chatFServer().strip().split(',')  # check credentials from server
+        
+        return statFlag.lower().strip()
+
+    def get_bmi(self, weight_height):
+        self.chatTServer("body_info,"+weight_height+","+self.username)  # send them
+        return self.chatFServer()  # get back the BMI
 
     def CommunicationLoop(self, name_pass_pair):
         inputMsg = ' '
@@ -100,8 +120,9 @@ class TCPClient():
                 # self.chatFServer() # requesting weight and height
 
                 weight_height_lst = inputMsg.strip().split(',')[2:]
-                weight_height = weight_height_lst[0] + "," +weight_height_lst[1] 
-                self.chatTServer( weight_height)  # send them
+                weight_height = weight_height_lst[0] + \
+                    "," + weight_height_lst[1]
+                self.chatTServer(weight_height)  # send them
                 self.dataReceived = self.chatFServer()  # get back the BMI
                 stillOn = False
             else:
@@ -116,7 +137,6 @@ class TCPClient():
         # sys.exit()
 
 
-
 if __name__ == "__main__":
 
     # assuming server is on same machine of client ,this function gets the default local  IPv4 Address for any machine.
@@ -124,4 +144,4 @@ if __name__ == "__main__":
     serverPort = 22222
 
     client = TCPClient(serverIp, serverPort)
-    # client.chatLoop()
+    # client.CommunicationLoop("esl,8388")
